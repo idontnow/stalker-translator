@@ -1,0 +1,9 @@
+# .gitignore content
+config.json
+projects/
+*.exe
+dist/
+build/
+*.spec
+__pycache__/
+*.log

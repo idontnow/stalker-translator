@@ -1,0 +1,168 @@
+{
+    "0": {
+        "name": "UI & System",
+        "files": [
+            "ui_st_credits.xml",
+            "ui_st_inventory.xml",
+            "ui_st_keybinding.xml",
+            "ui_st_mm.xml",
+            "ui_st_mp.xml",
+            "ui_st_other.xml",
+            "ui_st_pda.xml",
+            "ui_st_pda_tutorial.xml",
+            "ui_st_screen.xml",
+            "st_items_artefacts.xml",
+            "st_items_equipment.xml",
+            "st_items_outfit.xml",
+            "st_items_quest.xml",
+            "st_items_weapons.xml",
+            "st_items_weapons_upgrades.xml",
+            "mp_st_adip_map.xml",
+            "st_mp_mapdesc.xml",
+            "st_mp_speechmenu.xml",
+            "st_mp_teamdesc.xml"
+        ]
+    },
+    "1": {
+        "name": "Prologue: Swamps",
+        "files": [
+            "st_dialogs_marsh.xml",
+            "st_characters_marsh.xml",
+            "st_land_names_marsh.xml",
+            "st_quests_marsh.xml"
+        ]
+    },
+    "2": {
+        "name": "The South: Cordon & Garbage",
+        "files": [
+            "st_dialogs_escape.xml",
+            "st_characters_escape.xml",
+            "st_land_names_escape.xml",
+            "st_quests_escape.xml",
+            "st_dialogs_garbage.xml",
+            "st_characters_garbage.xml",
+            "st_land_names_garbage.xml",
+            "st_quests_garbage.xml"
+        ]
+    },
+    "3": {
+        "name": "Faction Wars",
+        "files": [
+            "st_dialogs_darkvalley.xml",
+            "st_characters_darkvalley.xml",
+            "st_land_names_darkvalley.xml",
+            "st_quests_darkvalley.xml",
+            "st_dialogs_agroprom.xml",
+            "st_characters_agroprom.xml",
+            "st_land_names_agroprom.xml",
+            "st_quests_agroprom.xml",
+            "st_dialogs_agroprom_underground.xml",
+            "st_quests_agroprom_underground.xml"
+        ]
+    },
+    "4": {
+        "name": "Science & Red Forest",
+        "files": [
+            "st_dialogs_yantar.xml",
+            "st_characters_yantar.xml",
+            "st_land_names_yantar.xml",
+            "st_quests_yantar.xml",
+            "st_dialogs_redforest.xml",
+            "st_characters_redforest.xml",
+            "st_land_names_redforest.xml",
+            "st_quests_red_forest.xml"
+        ]
+    },
+    "5": {
+        "name": "Path to North",
+        "files": [
+            "st_dialogs_military.xml",
+            "st_characters_military.xml",
+            "st_land_names_military.xml",
+            "st_quests_military.xml",
+            "st_dialogs_limansk.xml",
+            "st_characters_limansk.xml",
+            "st_land_names_limansk.xml",
+            "st_quests_limansk.xml"
+        ]
+    },
+    "6": {
+        "name": "Endgame",
+        "files": [
+            "st_dialogs_hospital.xml",
+            "st_characters_hospital.xml",
+            "st_land_names_hospital.xml",
+            "st_quests_hospital.xml",
+            "st_dialogs.xml",
+            "st_quests_katacomb.xml"
+        ]
+    },
+    "7": {
+        "name": "Misc & System",
+        "files": [
+            "st_characters.xml",
+            "st_dialog_manager.xml",
+            "st_generate_fnames.xml",
+            "st_generate_snames.xml",
+            "st_smart_terrain_names.xml",
+            "st_subtitles.xml",
+            "st_treasures.xml",
+            "st_quests_general.xml"
+        ]
+    },
+    "9": {
+        "name": "ALL FILES (A-Z)",
+        "files": [
+            "st_characters.xml",
+            "st_dialog_manager.xml",
+            "st_dialogs.xml",
+            "st_dialogs_agroprom.xml",
+            "st_dialogs_agroprom_underground.xml",
+            "st_dialogs_darkvalley.xml",
+            "st_dialogs_escape.xml",
+            "st_dialogs_garbage.xml",
+            "st_dialogs_limansk.xml",
+            "st_dialogs_marsh.xml",
+            "st_dialogs_military.xml",
+            "st_dialogs_redforest.xml",
+            "st_dialogs_yantar.xml",
+            "st_generate_fnames.xml",
+            "st_generate_snames.xml",
+            "st_items_artefacts.xml",
+            "st_items_equipment.xml",
+            "st_items_outfit.xml",
+            "st_items_quest.xml",
+            "st_items_weapons.xml",
+            "st_items_weapons_upgrades.xml",
+            "st_mp_mapdesc.xml",
+            "st_mp_speechmenu.xml",
+            "st_mp_teamdesc.xml",
+            "st_quests_agroprom.xml",
+            "st_quests_agroprom_underground.xml",
+            "st_quests_darkvalley.xml",
+            "st_quests_escape.xml",
+            "st_quests_garbage.xml",
+            "st_quests_general.xml",
+            "st_quests_hospital.xml",
+            "st_quests_katacomb.xml",
+            "st_quests_limansk.xml",
+            "st_quests_marsh.xml",
+            "st_quests_military.xml",
+            "st_quests_red_forest.xml",
+            "st_quests_yantar.xml",
+            "st_smart_terrain_names.xml",
+            "st_subtitles.xml",
+            "st_treasures.xml",
+            "ui_st_credits.xml",
+            "ui_st_credits_ltu.xml",
+            "ui_st_inventory.xml",
+            "ui_st_keybinding.xml",
+            "ui_st_mm.xml",
+            "ui_st_mp.xml",
+            "ui_st_other.xml",
+            "ui_st_pda.xml",
+            "ui_st_pda_tutorial.xml",
+            "ui_st_screen.xml"
+        ]
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "game_name": "S.T.A.L.K.E.R. Clear Sky",
+    "language_code": "ltu",
+    "font_prefix": "_cent",
+    "directories": {
+        "work_dir": "/mnt/cyborgas117/LINDD/prefixes/stalker-clear-sky/drive_c/Games/STALKER_ClearSky/gamedata/configs/text/ukr",
+        "reference_dir": "/mnt/cyborgas117/LINDD/prefixes/stalker-clear-sky/drive_c/Games/STALKER_ClearSky/gamedata/configs/text/bak_ukr_ENG",
+        "backup_master": "Master_UTF8_Backup",
+        "backup_game_ready": "HALT_Backup",
+        "backup_original": "Original_Backup",
+        "snapshots": "User_Snapshots"
+    },
+    "encoding": {
+        "master": "utf-8",
+        "game_physical": "windows-1250",
+        "game_header_fake": "windows-1251"
+    }
+}
