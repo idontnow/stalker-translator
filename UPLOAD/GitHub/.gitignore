@@ -1,9 +1,23 @@
-# .gitignore content
-config.json
-projects/
-*.exe
-dist/
-build/
-*.spec
+# Python šiukšlės
 __pycache__/
-*.log
+*.py[cod]
+*.spec
+
+# PyInstaller šiukšlės
+build/
+dist/
+
+# Konfigūracija ir raktai (LABAI SVARBU)
+config.json
+key.pem
+cert.pem
+translator_error.log
+
+# Projektai ir darbiniai failai
+projects/
+UPLOAD/
+old/
+
+# Vartotojo sugeneruoti failai
+recompile_game_files.py
+test_encoding_variants.py
