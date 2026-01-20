@@ -1,5 +1,0 @@
-beautifulsoup4
-lxml
-deep-translator
-colorama
-google-genai
