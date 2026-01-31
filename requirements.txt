@@ -1,5 +1,6 @@
 beautifulsoup4
 lxml
-deep-translator
 colorama
+deep-translator
 google-genai
+prompt_toolkit

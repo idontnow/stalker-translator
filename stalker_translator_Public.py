@@ -12,7 +12,6 @@ import sys
 from pathlib import Path
 
 # --- DEPENDENCY HANDLING ---
-# 1. COLORAMA
 try:
     from colorama import init, Fore, Back, Style
     init(autoreset=True)
@@ -23,7 +22,6 @@ except ImportError:
         def __getattr__(self, name): return ""
     Fore = Back = Style = MockColor()
 
-# 2. BEAUTIFULSOUP (Robust)
 HAS_BS4 = False
 try:
     from bs4 import BeautifulSoup
@@ -35,15 +33,12 @@ try:
 except ImportError:
     HAS_BS4 = False
 
-# 3. PROMPT_TOOLKIT (The New Internal Editor)
 try:
     from prompt_toolkit import prompt
-    from prompt_toolkit.formatted_text import HTML
     HAS_PROMPT = True
 except ImportError:
     HAS_PROMPT = False
 
-# 4. TRANSLATORS
 try: from deep_translator import GoogleTranslator; HAS_GTRANS = True
 except ImportError: HAS_GTRANS = False
 try: from google import genai; HAS_GENAI = True
@@ -52,47 +47,39 @@ except ImportError: HAS_GENAI = False
 logging.basicConfig(filename='translator_error.log', level=logging.ERROR, format='%(asctime)s %(message)s')
 warnings.filterwarnings("ignore")
 
-# --- UI LANGUAGE DICTIONARY ---
+# --- UI LANGUAGE DICTIONARY (ASCII SAFE) ---
 LANG = {
     "eng": {
-        "PM_TITLE": "=== PROJECT MANAGER ===", "FOUND_PROJ": "Found projects:", "NO_PROJ": "No projects found. Run ST_Setup.exe", "NO_PROJ_FOLDER": "No 'projects' folder. Run ST_Setup.exe",
-        "NEW_PROJ": "[N] Create New Project", "QUIT": "[Q] Quit", "SELECT": "👉 Select project", "INVALID": "Invalid choice.", "CREATE_HINT": "Run 'ST_Setup.exe' to create a project.", "CLOSING": "Closing...",
-        "LOADING": "Loading project: {}...", "FILES": "FILES:", "SELECT_FILE": "👉 Select file (0 back)", "NO_FILES": "No files in this segment.", "START": "Start.", "DONE": "Done!",
+        "PM_TITLE": "=== PROJECT MANAGER ===", "FOUND_PROJ": "Found projects:", "NO_PROJ": "No projects found.",
+        "NEW_PROJ": "[N] Create New Project", "QUIT": "[Q] Quit", "SELECT": ">> Select project", "INVALID": "Invalid choice.",
+        "LOADING": "Loading project: {}...", "FILES": "FILES:", "SELECT_FILE": ">> Select file (0 back)", "NO_FILES": "No files.",
+        "START": "Start of file.", "DONE": "Done!",
         "MODE_Q": "Mode [1] Audit, [2] Sanity", "LOCKED_Q": "Locked ({}). Show? [y/N]", "CONTINUE_Q": "Continue {}? [Y/n]",
-        "MENU": "[e] Edit [l] Lock [s] Search [b] Back [f] File List [Enter] Next [q] Quit", "TOOL_G": "[g] Google ", "TOOL_A": "[a] AI ",
-        "EDIT_PROMPT": "Type translation below (Press Enter to confirm):", "EDIT_OLD": "Original (ENG): "
+        "MENU": "[e] Edit [l] Lock [s] Search [b] Back [f] File List [h] Help [Enter] Next [q] Quit", "TOOL_G": "[g] Google ", "TOOL_A": "[a] AI ",
+        "EDIT_PROMPT": "Type translation below (Press Enter to confirm):", "EDIT_OLD": "Original (ENG): ",
+        "SEARCH_PROMPT": "Search text or ID: ", "NOT_FOUND": "String not found.",
+        "HELP_TITLE": "=== COMMAND GUIDE ===",
+        "H_LIST": ["[e] Edit   - Manual entry", "[g] Google - Auto-translate", "[a] AI     - Context translate", "[l] Lock   - Toggle lock", "[s] Search - Find by ID/Text", "[b] Back   - Previous line", "[f] Files  - Switch file", "[q] Quit   - Save & Exit"]
     },
     "ltu": {
-        "PM_TITLE": "=== PROJEKTŲ VALDYMAS ===", "FOUND_PROJ": "Rasti projektai:", "NO_PROJ": "Projektų nerasta. Paleiskite ST_Setup.exe", "NO_PROJ_FOLDER": "Nėra 'projects' aplanko. Paleiskite ST_Setup.exe",
-        "NEW_PROJ": "[N] Kurti naują projektą", "QUIT": "[Q] Išeiti", "SELECT": "👉 Pasirinkite projektą", "INVALID": "Neteisingas pasirinkimas.", "CREATE_HINT": "Paleiskite 'ST_Setup.exe' projektui sukurti.", "CLOSING": "Užsidaro...",
-        "LOADING": "Užkraunamas projektas: {}...", "FILES": "FAILAI:", "SELECT_FILE": "👉 Pasirinkite failą (0 atgal)", "NO_FILES": "Nėra failų šiame segmente.", "START": "Pradžia.", "DONE": "Viskas!",
-        "MODE_Q": "Režimas [1] Auditas, [2] Tikrinimas", "LOCKED_Q": "Užrakinti ({}). Rodyti? [y/N]", "CONTINUE_Q": "Tęsti {}? [Y/n]",
-        "MENU": "[e] Redaguoti [l] Užrakinti [s] Paieška [b] Atgal [f] Failai [Enter] Kitas [q] Išeiti", "TOOL_G": "[g] Google ", "TOOL_A": "[a] AI ",
-        "EDIT_PROMPT": "Įrašykite vertimą žemiau (Enter patvirtinimui):", "EDIT_OLD": "Originalas (ENG): "
-    },
-    "ukr": {
-        "PM_TITLE": "=== МЕНЕДЖЕР ПРОЕКТІВ ===", "FOUND_PROJ": "Знайдені проекти:", "NO_PROJ": "Проектів не знайдено. Запустіть ST_Setup.exe", "NO_PROJ_FOLDER": "Немає папки 'projects'. Запустіть ST_Setup.exe",
-        "NEW_PROJ": "[N] Створити новий проект", "QUIT": "[Q] Вихід", "SELECT": "👉 Оберіть проект", "INVALID": "Невірний вибір.", "CREATE_HINT": "Запустіть 'ST_Setup.exe'", "CLOSING": "Закриття...",
-        "LOADING": "Завантаження проекту: {}...", "FILES": "ФАЙЛИ:", "SELECT_FILE": "👉 Оберіть файл (0 назад)", "NO_FILES": "Немає файлів у цьому сегменті.", "START": "Початок.", "DONE": "Готово!",
-        "MODE_Q": "Режим [1] Аудит, [2] Перевірка", "LOCKED_Q": "Заблоковані ({}). Показати? [y/N]", "CONTINUE_Q": "Продовжити {}? [Y/n]",
-        "MENU": "[e] Редаг [l] Блок [s] Пошук [b] Назад [f] Файли [Enter] Далі [q] Вихід", "TOOL_G": "[g] Google ", "TOOL_A": "[a] AI ",
-        "EDIT_PROMPT": "Введіть переклад (Enter для підтвердження):", "EDIT_OLD": "Оригінал (ENG): "
-    },
-    "rus": {
-        "PM_TITLE": "=== МЕНЕДЖЕР ПРОЕКТОВ ===", "FOUND_PROJ": "Найденные проекты:", "NO_PROJ": "Проекты не найдены. Запустите ST_Setup.exe", "NO_PROJ_FOLDER": "Нет папки 'projects'. Запустите ST_Setup.exe",
-        "NEW_PROJ": "[N] Создать новый проект", "QUIT": "[Q] Выход", "SELECT": "👉 Выберите проект", "INVALID": "Неверный выбор.", "CREATE_HINT": "Запустите 'ST_Setup.exe'", "CLOSING": "Закрытие...",
-        "LOADING": "Загрузка проекта: {}...", "FILES": "ФАЙЛЫ:", "SELECT_FILE": "👉 Выберите файл (0 назад)", "NO_FILES": "Нет файлов в этом сегменте.", "START": "Начало.", "DONE": "Готово!",
-        "MODE_Q": "Режим [1] Аудит, [2] Проверка", "LOCKED_Q": "Скрытые ({}). Показать? [y/N]", "CONTINUE_Q": "Продолжить {}? [Y/n]",
-        "MENU": "[e] Редакт [l] Блок [s] Поиск [b] Назад [f] Файлы [Enter] Далее [q] Выход", "TOOL_G": "[g] Google ", "TOOL_A": "[a] AI ",
-        "EDIT_PROMPT": "Введите перевод (Enter для подтверждения):", "EDIT_OLD": "Оригинал (ENG): "
+        "PM_TITLE": "=== PROJEKTU VALDYMAS ===", "FOUND_PROJ": "Rasti projektai:", "NO_PROJ": "Projektu nerasta.",
+        "NEW_PROJ": "[N] Kurti nauja projekta", "QUIT": "[Q] Iseiti", "SELECT": ">> Pasirinkite projekta", "INVALID": "Neteisingas pasirinkimas.",
+        "LOADING": "Uzkraunamas projektas: {}...", "FILES": "FAILAI:", "SELECT_FILE": ">> Pasirinkite faila (0 atgal)", "NO_FILES": "Nera failu.",
+        "START": "Failo pradzia.", "DONE": "Viskas!",
+        "MODE_Q": "Rezimas [1] Auditas, [2] Tikrinimas", "LOCKED_Q": "Uzrakinti ({}). Rodyti? [y/N]", "CONTINUE_Q": "Testi {}? [Y/n]",
+        "MENU": "[e] Redaguoti [l] Uzrakinti [s] Paieska [b] Atgal [f] Failai [h] Pagalba [Enter] Kitas [q] Iseiti", "TOOL_G": "[g] Google ", "TOOL_A": "[a] AI ",
+        "EDIT_PROMPT": "Irasykite vertima zemiau (Enter patvirtinimui):", "EDIT_OLD": "Originalas (ENG): ",
+        "SEARCH_PROMPT": "Ieskoti teksto ar ID: ", "NOT_FOUND": "Nerasta.",
+        "HELP_TITLE": "=== KOMANDU GIDAS ===",
+        "H_LIST": ["[e] Redag   - Rankinis vedimas", "[g] Google  - Auto-vertimas", "[a] AI      - Gemini vertimas", "[l] Lock    - Uzrakinti/Atrakinti", "[s] Paieska - Pagal ID ar teksta", "[b] Atgal   - Viena eilute atgal", "[f] Failai  - Keisti faila", "[q] Iseiti  - Issaugoti ir iseiti"]
     }
 }
+LANG["ukr"] = LANG["eng"]; LANG["rus"] = LANG["eng"]
 
 CTX = {"config": {}, "project": {}, "mapping": {}, "segments": {}, "paths": {}, "client": None}
 L_CODE = "eng"
 
 # --- CORE LOGIC ---
-
 class RegexParser:
     def __init__(self, content):
         self.content = content
@@ -267,16 +254,16 @@ def backup_originals():
                 except: pass
 
 def print_ui(d):
-    bar_len = 20; filled = int(bar_len * d['percent'] / 100); bar = "█" * filled + "-" * (bar_len - filled)
+    bar_len = 20; filled = int(bar_len * d['percent'] / 100); bar = "#" * filled + "-" * (bar_len - filled)
     lock = f" {Back.RED}{Fore.WHITE} LOCKED {Style.RESET_ALL}" if d['locked'] else ""
     src = f" {Back.MAGENTA}{Fore.WHITE} MASTER {Style.RESET_ALL}" if d['is_master'] else f" {Back.YELLOW}{Fore.BLACK} GAME {Style.RESET_ALL}"
 
-    print(f"\033[2J\033[H{Fore.CYAN}🛠️  STALKER TRANSLATOR (v0.560){Fore.RESET}")
-    print(f"Project: {CTX['config']['last_active_project']} | {d['mode']}")
-    print(f"📂 {d['filename']} [{Fore.GREEN}{bar}{Fore.RESET}] {d['percent']}% ({d['current']}/{d['total']}){src}")
-    print("-" * 60 + f"\n🔹 ID: {Fore.BLUE}{d['str_id']}{Fore.RESET}{lock}")
-    print(f"🇬🇧 {Back.WHITE}{Fore.BLACK} {d['eng']} {Style.RESET_ALL}")
-    print(f"📝 {Back.YELLOW}{Fore.BLACK} {d['lit']} {Style.RESET_ALL}")
+    print(f"\033[2J\033[H{Fore.CYAN}=== STALKER TRANSLATOR (v0.561) ==={Fore.RESET}")
+    print(f"Proj: {CTX['config']['last_active_project']} | {d['mode']}")
+    print(f"[FILE] {d['filename']} [{Fore.GREEN}{bar}{Fore.RESET}] {d['percent']}% ({d['current']}/{d['total']}){src}")
+    print("-" * 60 + f"\n[*] ID: {Fore.BLUE}{d['str_id']}{Fore.RESET}{lock}")
+    print(f"[ENG] {Back.WHITE}{Fore.BLACK} {d['eng']} {Style.RESET_ALL}")
+    print(f"[LIT] {Back.YELLOW}{Fore.BLACK} {d['lit']} {Style.RESET_ALL}")
     print("-" * 60)
 
     tools = ""
@@ -284,13 +271,10 @@ def print_ui(d):
     if CTX["client"]: tools += LANG[L_CODE]['TOOL_A']
     print(f"{tools}{LANG[L_CODE]['MENU']}")
 
-# --- NEW: UNIFIED INTERNAL EDITOR ---
 def run_editor(initial_text, eng_ctx):
-    # 1. Check if user configured a custom external editor
     user_editor = CTX["config"].get("editor_command", "internal")
 
     if user_editor != "internal":
-        # EXTERNAL MODE (Notepad/Nano)
         with tempfile.NamedTemporaryFile(suffix=".tmp", mode='w+', encoding='utf-8', delete=False) as tf:
             tf.write(f"# ENG:\n# {eng_ctx}\n# LT:\n# {initial_text}\n# -------------------\n{initial_text}")
             tf_path = tf.name
@@ -300,23 +284,15 @@ def run_editor(initial_text, eng_ctx):
             subprocess.call(cmd)
             with open(tf_path, 'r', encoding='utf-8') as f: l = [x for x in f.readlines() if not x.startswith("#")]
             return "".join(l).strip() or initial_text
-        except:
-            # Fallback to internal if external fails
-            pass
+        except: pass
         finally:
             if os.path.exists(tf_path): os.remove(tf_path)
 
-    # 2. INTERNAL MODE (prompt_toolkit)
-    # This works in the same window, no popups.
     if HAS_PROMPT:
         print(f"\n{Fore.YELLOW}{LANG[L_CODE]['EDIT_OLD']}{Style.RESET_ALL}{eng_ctx}")
         print(f"{Fore.GREEN}{LANG[L_CODE]['EDIT_PROMPT']}{Style.RESET_ALL}")
-
-        # 'prompt' supports default text (pre-filled with current translation)
-        new_text = prompt('> ', default=initial_text)
-        return new_text.strip()
+        return prompt('> ', default=initial_text).strip()
     else:
-        # Fallback for Survivor Mode (input() is rudimentary but works)
         print(f"\n[SURVIVOR EDITOR]")
         print(f"Original: {eng_ctx}")
         print(f"Current:  {initial_text}")
@@ -325,7 +301,7 @@ def run_editor(initial_text, eng_ctx):
         return new_input if new_input else initial_text
 
 def show_file_menu(files, prog_dict):
-    print(f"\n{Fore.CYAN}📂 {LANG[L_CODE]['FILES']}{Fore.RESET}")
+    print(f"\n{Fore.CYAN}[FILE MENU]{Fore.RESET}")
     for i, f in enumerate(files):
         p = prog_dict.get(f, 0); ps = f"{Fore.GREEN}({p}){Fore.RESET}" if p > 0 else ""
         print(f"[{i+1}] {f} {ps}")
@@ -388,40 +364,56 @@ def process_file(filename, start_idx=0, whitelist=set()):
             "locked": is_locked, "is_master": is_master
         }
 
-        while True:
-            print_ui(ui_data); cmd = input("👉 ").lower()
-            if cmd == 'n': idx += 1; break
-            elif cmd == 'q': return "QUIT", idx
-            elif cmd == 'f': return "FILE_MENU", idx
-            elif cmd == 'b': return "BACK", idx
-            elif cmd == 'l':
-                if is_locked: whitelist.remove(str_id)
-                else: whitelist.add(str_id)
-                save_json(CTX["paths"]["whitelist"], list(whitelist))
-                ui_data['locked'] = not is_locked
-            elif cmd == 'e':
-                new_txt = run_editor(lit_txt, eng_txt)
-                if new_txt != lit_txt:
-                    if not use_regex: tag.string = new_txt; save_triple_versions(parser_obj, filename, True)
-                    else: u = parser_obj.update_text(str_id, new_txt); save_triple_versions(u, filename, False)
-                    lit_txt = new_txt; ui_data['lit'] = new_txt
-            elif cmd == 'g' and HAS_GTRANS:
-                try:
-                    tr = GoogleTranslator(source='auto', target='lt').translate(eng_txt)
-                    if not use_regex: tag.string = tr; save_triple_versions(parser_obj, filename, True)
-                    else: u = parser_obj.update_text(str_id, tr); save_triple_versions(u, filename, False)
-                    ui_data['lit'] = tr
-                except: pass
-            elif cmd == 'a' and CTX["client"]:
-                try:
-                    p = f"Translate to {CTX['project']['language_code']}. Keep special symbols. Context: S.T.A.L.K.E.R. Text: {ui_data['eng']}"
-                    r = CTX["client"].models.generate_content(model="gemini-2.5-flash", contents=p)
-                    tr = r.text.strip()
-                    if not use_regex: tag.string = tr; save_triple_versions(parser_obj, filename, True)
-                    else: u = parser_obj.update_text(str_id, tr); save_triple_versions(u, filename, False)
-                    ui_data['lit'] = tr
-                except: pass
-            elif cmd == '': idx += 1; break
+        print_ui(ui_data); cmd = input(">> ").lower()
+
+        if cmd == 'n' or cmd == '': idx += 1
+        elif cmd == 'q': return "QUIT", idx
+        elif cmd == 'f': return "FILE_MENU", idx
+        elif cmd == 'b': # BACK FIX
+            if idx > 0: idx -= 1
+            else: print(f"{Fore.RED}{LANG[L_CODE]['START']}{Fore.RESET}"); time.sleep(1)
+        elif cmd == 'h': # HELP FIX
+            print(f"\n{Fore.GREEN}{LANG[L_CODE]['HELP_TITLE']}{Fore.RESET}")
+            for line in LANG[L_CODE]['H_LIST']: print(line)
+            input(f"\n[Enter]...");
+        elif cmd == 's': # SEARCH FIX
+            q = input(f"{LANG[L_CODE]['SEARCH_PROMPT']}").lower()
+            found_i = -1
+            for i, t in enumerate(tags):
+                pid = t.parent['id'].lower()
+                txt = (t.string or "").lower()
+                if q in pid or q in txt:
+                    found_i = i; break
+            if found_i != -1: idx = found_i
+            else: print(f"{Fore.RED}{LANG[L_CODE]['NOT_FOUND']}{Fore.RESET}"); time.sleep(1)
+        elif cmd == 'l': # LOCK FIX
+            if is_locked: whitelist.remove(str_id)
+            else: whitelist.add(str_id)
+            save_json(CTX["paths"]["whitelist"], list(whitelist))
+        elif cmd == 'e': # EDIT FIX
+            new_txt = run_editor(lit_txt, eng_txt)
+            if new_txt != lit_txt:
+                tag.string = new_txt
+                if not use_regex: save_triple_versions(parser_obj, filename, True)
+                else: u = parser_obj.update_text(str_id, new_txt); save_triple_versions(u, filename, False)
+                # Note: No 'idx+=1' here, so loop repeats and prints updated UI immediately
+        elif cmd == 'g' and HAS_GTRANS:
+            try:
+                tr = GoogleTranslator(source='auto', target='lt').translate(eng_txt)
+                tag.string = tr
+                if not use_regex: save_triple_versions(parser_obj, filename, True)
+                else: u = parser_obj.update_text(str_id, tr); save_triple_versions(u, filename, False)
+            except: pass
+        elif cmd == 'a' and CTX["client"]:
+            try:
+                p = f"Translate to {CTX['project']['language_code']}. Keep special symbols. Context: S.T.A.L.K.E.R. Text: {ui_data['eng']}"
+                r = CTX["client"].models.generate_content(model="gemini-2.5-flash", contents=p)
+                tr = r.text.strip()
+                tag.string = tr
+                if not use_regex: save_triple_versions(parser_obj, filename, True)
+                else: u = parser_obj.update_text(str_id, tr); save_triple_versions(u, filename, False)
+            except: pass
+
     return "DONE", len(tags)
 
 SESSION = {}
@@ -435,10 +427,10 @@ def main():
     whitelist = set(load_json(CTX["paths"]["whitelist"]))
     files_prog = sess.get("files_progress", {})
 
-    print("\nSegmentai:")
+    print("\nSEGMENTS:")
     seg_list = sorted(CTX["segments"].keys())
     for k in seg_list: print(f"[{k}] {CTX['segments'][k]['name']}")
-    seg_id = input("👉 [0]: ") or '0'
+    seg_id = input(">> [0]: ") or '0'
     files = [f for f in CTX["segments"].get(seg_id, CTX["segments"]["0"])["files"] if os.path.exists(os.path.join(CTX["paths"]["lit"], f))]
 
     if not files: print(LANG[L_CODE]['NO_FILES']); return
@@ -463,10 +455,6 @@ def main():
         elif res == "FILE_MENU":
             nf = show_file_menu(files, files_prog)
             if nf: curr_file = nf
-        elif res == "BACK":
-            curr_idx = files.index(curr_file)
-            if curr_idx > 0: curr_file = files[curr_idx - 1]
-            else: print(LANG[L_CODE]['START']); time.sleep(1)
         elif res == "DONE" or res == "SKIP":
             curr_idx = files.index(curr_file)
             if curr_idx + 1 < len(files): curr_file = files[curr_idx + 1]
