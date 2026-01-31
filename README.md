@@ -49,10 +49,28 @@
 
 ---
 
-## 🛠️ For Developers
+# 🛠️ For Developers
 
 To run from source:
 ```bash
 git clone [https://github.com/idontnow/stalker-translator.git](https://github.com/idontnow/stalker-translator.git)
 pip install -r requirements.txt
 python stalker_translator_Public.py
+```
+
+**Note:** The tool supports a "Survivor Mode". Even if you don't install the libraries from requirements.txt, the script will still run using built-in Python tools, but features like UI colors, Google Translate, and Gemini AI API will be disabled.
+
+## 📜 Credits & Acknowledgments
+
+Created by [idontnow](https://github.com/idontnow).
+
+* **GSC Game World:** Huge thanks for creating the legendary **S.T.A.L.K.E.R.** universe and the X-Ray Engine. This tool is a tribute to your work.
+* **Development Assistant:** Code logic, architecture, and multilingual support were developed with the assistance of **Google Gemini AI**.
+* **Modding Community:** Thanks to all stalkers from various fan forums who documented the X-Ray engine's file structures and "anomalies" over the years.
+
+---
+
+### ⚖️ Disclaimer
+This software is an unofficial fan-made tool. It is not affiliated with or endorsed by GSC Game World.
+
+**S.T.A.L.K.E.R.** and **X-Ray Engine** are trademarks of GSC Game World.
